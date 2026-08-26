@@ -166,6 +166,12 @@ button.ghost:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ---------- results ---------- */
 .results{margin:56px 0 20px;padding:26px 0 0;border-top:1px solid var(--line)}
+.admin-clear{
+  font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.06em;color:var(--faint);background:none;border:none;cursor:pointer;
+  padding:2px 0;text-decoration:underline;text-underline-offset:2px;
+}
+.admin-clear:hover{color:var(--ink)}
 .rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px;margin-top:18px}
 .rgrid h3{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10.5px;font-weight:700;
   letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
@@ -235,6 +241,12 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
   var STATE  = JSON.parse(document.getElementById('state').textContent);
   var MAX = 3;
   var LS = 'carvers-choice-v1';
+  var LS_CLEARED = 'carvers-choice-cleared-v1';
+  var CLEAR_PW = 'Bobcaygeon';
+
+  try{
+    if(localStorage.getItem(LS_CLEARED)) STATE.submissions = [];
+  }catch(e){}
 
   var byNum = {};
   PHOTOS.forEach(function(p){ byNum[p.n] = p; });
@@ -311,7 +323,8 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
     }).join('');
     return '<section class="results">'
       + '<div class="srule" style="margin-top:0"><h2>Who picked what</h2>'
-      +   '<span class="rng">'+subs.length+(subs.length===1?' response':' responses')+'</span><span class="fill"></span></div>'
+      +   '<span class="rng">'+subs.length+(subs.length===1?' response':' responses')+'</span><span class="fill"></span>'
+      +   '<button class="admin-clear" id="clearResults" type="button">Clear results</button></div>'
       + '<div class="rgrid">'
       +   '<div><h3>Most picked</h3>'+(bars || '<p class="empty">No picks yet.</p>')+'</div>'
       +   '<div><h3>Everyone</h3>'
@@ -539,6 +552,16 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
 
   /* ---------- events ---------- */
   document.addEventListener('click', function(e){
+    if(e.target.id === 'clearResults'){
+      var pw = prompt('Enter password to clear results:');
+      if(pw === null) return;
+      if(pw !== CLEAR_PW){ alert('Wrong password.'); return; }
+      if(!confirm('Clear all submitted picks? This only clears the view on this device — it does not affect what other visitors see.')) return;
+      STATE.submissions = [];
+      try{ localStorage.setItem(LS_CLEARED, '1'); }catch(err){}
+      render();
+      return;
+    }
     var z = e.target.closest('[data-zoom]');
     if(z){ e.preventDefault(); openLB(+z.dataset.zoom); return; }
     if(e.target.id === 'lbx' || e.target.id === 'lb'){ closeLB(); return; }
