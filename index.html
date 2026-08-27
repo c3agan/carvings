@@ -284,7 +284,7 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
   }
   function lockedResultsHTML(){
     return '<section class="results">'
-      + '<div class="srule" style="margin-top:0"><h2>Who picked what</h2><span class="fill"></span>'
+      + '<div class="srule" style="margin-top:0"><h2>Admin</h2><span class="fill"></span>'
       +   '<button class="admin-clear" id="viewResults" type="button">View results</button></div>'
       + '</section>';
   }
@@ -367,7 +367,7 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
         + '</span></li>';
     }).join('');
     return '<section class="results">'
-      + '<div class="srule" style="margin-top:0"><h2>Who picked what</h2>'
+      + '<div class="srule" style="margin-top:0"><h2>Admin</h2>'
       +   '<span class="rng">'+subs.length+(subs.length===1?' response':' responses')+'</span><span class="fill"></span>'
       +   '<button class="admin-clear" id="clearResults" type="button">Clear results</button></div>'
       + '<div class="rgrid">'
