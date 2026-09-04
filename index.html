@@ -363,7 +363,7 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
     }).join('');
     var who = subs.slice().reverse().map(function(s){
       return '<li><span class="nm">'+esc(s.name)+'</span><span class="pk">'
-        + s.picks.slice().sort(function(a,b){return a-b;}).map(function(n){return '#'+n;}).join('  ')
+        + s.picks.map(function(n){return '#'+n;}).join('  ')
         + '</span></li>';
     }).join('');
     return '<section class="results">'
@@ -551,16 +551,16 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
 
     sending = true; sendEl.disabled = true; note('Sending…');
 
-    var sorted = picks.slice().sort(function(a,b){return a-b;});
+    var ordered = picks.slice();
     var slug = slugify(name);
     try{
       var res = await fetch(FIREBASE_URL + '/submissions/' + slug + '.json', {
         method: 'PUT',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ name: name, picks: sorted })
+        body: JSON.stringify({ name: name, picks: ordered })
       });
       if(!res.ok) throw new Error('HTTP ' + res.status);
-      submissionsObj[slug] = { name: name, picks: sorted };
+      submissionsObj[slug] = { name: name, picks: ordered };
       submitted = true; save();
       note('Sent — thanks!');
       renderResults();
