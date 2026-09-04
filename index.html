@@ -217,6 +217,12 @@ button.ghost:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;color:var(--accent);
   font-variant-numeric:tabular-nums;flex:none;
 }
+.who .del{
+  font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10.5px;font-weight:600;
+  color:var(--faint);background:none;border:none;cursor:pointer;flex:none;
+  padding:2px 0;text-decoration:underline;text-underline-offset:2px;
+}
+.who .del:hover{color:#B84A3E}
 .empty{color:var(--faint);font-size:13.5px;font-style:italic}
 
 /* ---------- lightbox ---------- */
@@ -364,7 +370,7 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
     var who = subs.slice().reverse().map(function(s){
       return '<li><span class="nm">'+esc(s.name)+'</span><span class="pk">'
         + s.picks.map(function(n){return '#'+n;}).join('  ')
-        + '</span></li>';
+        + '</span><button class="del" data-slug="'+esc(slugify(s.name))+'" data-name="'+esc(s.name)+'" type="button" aria-label="Delete '+esc(s.name)+'’s entry">Delete</button></li>';
     }).join('');
     return '<section class="results">'
       + '<div class="srule" style="margin-top:0"><h2>Admin</h2>'
@@ -572,6 +578,15 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
 
 /* ---------- events ---------- */
   document.addEventListener('click', function(e){
+    var delBtn = e.target.closest && e.target.closest('.who .del');
+    if(delBtn){
+      var slug = delBtn.dataset.slug, dname = delBtn.dataset.name;
+      if(!confirm('Delete ' + dname + '’s entry? This cannot be undone.')) return;
+      fetch(FIREBASE_URL + '/submissions/' + slug + '.json', { method: 'DELETE' })
+        .then(function(){ delete submissionsObj[slug]; renderResults(); })
+        .catch(function(){ alert('Could not delete — check your connection and try again.'); });
+      return;
+    }
     if(e.target.id === 'viewResults'){
       var vpw = prompt('Enter password to view results:');
       if(vpw === null) return;
