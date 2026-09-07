@@ -404,7 +404,8 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
       + (vint.length ? sectionRule('Vintage, Not Carved by Al', rangeLabel(vint)) + '<div class="grid">'+vint.map(photoCard).join('')+'</div>' : '')
       + (pinned.length ? '<div class="grid">'+pinned.map(photoCard).join('')+'</div>' : '')
       + '<div id="resultsWrap">' + (resultsUnlocked ? resultsHTML() : lockedResultsHTML()) + '</div>'
-      + '<footer>Sending again with the same name replaces your earlier picks.</footer>'
+      + '<footer>Sending again with the same name replaces your earlier picks. '
+      +   'We hope to give everyone their top choice but in the event of several people wanting the same piece we will go to second or third preferences as required.</footer>'
       + '</main>'
       + '<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">'
       +   '<button class="x" id="lbx" type="button" aria-label="Close viewer">&times;</button>'
