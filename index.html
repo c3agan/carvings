@@ -401,10 +401,7 @@ footer{margin:38px 0 10px;padding-top:18px;border-top:1px solid var(--line);font
       +   '<h1>A.C.’s Carving Collection</h1>'
       +   '<p class="lede">Choose the <strong>three</strong> you like best, add your name, and click the <strong>Update my picks</strong> button at the bottom of this page.</p>'
       + '</header>'
-      + sectionRule('Finished pieces', rangeLabel(fin))
-      + '<div class="grid">'+fin.map(photoCard).join('')+'</div>'
-      + sectionRule('Still in progress', rangeLabel(unf))
-      + '<div class="grid">'+unf.map(photoCard).join('')+'</div>'
+      + '<div class="grid">'+fin.concat(unf).map(photoCard).join('')+'</div>'
       + (vint.length ? sectionRule('Vintage, Not Carved by Al', rangeLabel(vint)) + '<div class="grid">'+vint.map(photoCard).join('')+'</div>' : '')
       + (pinned.length ? '<div class="grid">'+pinned.map(photoCard).join('')+'</div>' : '')
       + '<div id="resultsWrap">' + (resultsUnlocked ? resultsHTML() : lockedResultsHTML()) + '</div>'
